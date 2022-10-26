@@ -1,15 +1,27 @@
+using Database.Entities;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
+var configuration = builder.Configuration;
 
 // Add services to the container.
 services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerDocument();
 services.AddRazorPages();
+
+// Add Database Context.
+services.AddDbContextPool<ApplicationDbContext>(options =>
+{
+    // Set default tracking behavior to AsNoTracking()
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+    options.UseNpgsql(configuration.GetConnectionString("Database"));
+});
 
 var app = builder.Build();
 
