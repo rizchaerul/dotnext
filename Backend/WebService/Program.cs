@@ -1,7 +1,13 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+services.AddControllers();
+services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -15,6 +21,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.MapControllers();
 
 app.MapRazorPages();
 
